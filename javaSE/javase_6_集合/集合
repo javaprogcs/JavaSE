@@ -1,0 +1,487 @@
+
+一、为什么需要集合
+ 如果要将100个学生成绩存放到程序中,怎么做？
+
+ 首先想到的是数组
+ int[] scores = new int[100];
+ 然而,长度是固定的,比如是101个学生成绩,这个数组就不能用了,越界。
+ 另外如果只使用了10个,则另外90个都被浪费了。
+ 总之：集合是数组的升级,长度是动态的，无需预定义
+
+ package com.zhangguo.chapter8.d1;
+ import java.util.ArrayList;
+ import java.util.List;
+
+ public class C1{
+    public static void main(String[] args){
+
+        //数组
+        int[] scores = new int[100];
+
+        //scores[200] = 99;
+
+        //泛型集合
+        List<Integer> marks1 = new ArrayList<Integer>();
+        marks1.add(98);
+        marks1.add(89);
+        marks1.add(59);
+
+        System.out.println(marks1.get(2)+1);
+        //...
+
+        //非泛型类型
+        List marks2 = new ArrayList();
+        marks2.add(98);
+        marks2.add(9.8);
+        marks2.add("九十九");
+
+        //非泛型有安全隐患
+        System.out.println(Integer.parseInt(marks2.get(2)+"")+1);
+    }
+ }
+ 使用Array(数组)存储对象方法具有一些弊端,需要提前对数组进行容量大小的设定,
+ 而Java集合就像一种容器,可以动态地把多个对象的引用放入容器中,不要提前设置容量大小,存
+ 多少个就是多少个,无需提前定义。
+
+ 数组是很常用的一种的数据结构,我们用它可以满足很多的功能,但是,有时我们会遇到如下这样的问题：
+ 1、我们需要该容器的长度是不确定的。
+ 2、我们需要它能自动排序
+ 3、我们需要存储以键值对方式存在的数据。
+
+ Java是一种面向对象语言,如果我们要针对多个对象进行操作,就必须对多个对象进行存储。
+ 而数组长度固定,不能满足变化的要求,所以,Java提供了集合。
+
+ 特点：
+  1、长度可以发生改变
+  2、只能存储对象
+  3、可以存储多种类型对象
+
+  数组与集合的区别：
+                     数组             集合
+     长度             固定             可变
+     存储元素         基本类型/引用类型   引用类型
+     元素类型的一致性   必须一致          可以不一致
+
+  二、Java常用集合类型
+
+    Collection接口存储一组不唯一，无序的对象
+    List接口存储一组不唯一,有序(插入排序)的对象,类似数组
+
+    0        1         2         3      4      5
+    aaaa     dddd     cccc       aaaa   eeee   dddd
+
+    Set接口存储一组唯一,无序的对象
+     aaa
+      bbb    ccc
+    Map接口存储一组键值对象,提供key到value的映射,key不允许重复
+
+    键：CN       JP       RU      FR
+    值：China   Japan    Russia   France
+
+
+                               是否有序       是否允许元素重复
+     Collection                  否             是
+     List                        是             是
+     Set          AbstractSet    否             否
+                  HashSet        否             否
+                  TreeSet        是(用二叉排序树)  否
+     Map          AbstractMap    否            使用Key-value来映射和
+                  HashMap        否                存储数据,key必须唯一,
+                  TreeMap        是(用二叉排序树)     value可以重复
+
+   List允许重复,有序
+   set不允许重复,无序
+   map value可重复,key不可重复,无序
+  三、List与ArrayList
+    3.0、Collection常用方法
+    3.0.1、添加功能
+      boolean add(Object obj):向集合中添加一个元素
+
+      boolean addAll(Collection c):向集合中添加一个集合的元素
+
+    3.0.2、删除功能
+        void clear(); 删除集合中所有元素
+        boolean remove(Object obj):从集合中删除指定的元素
+        boolean removeAll(Collection c):从集合中删除一个指定的集合元素
+    3.0.3、判断功能
+        boolean isEmpty():判断集合是否为空。
+
+        boolean contains(Object obj):判断集合中是否存在指定的元素
+
+        boolean containsAll(Collection c):判断集合中是否存在指定的一个集合中元素
+    3.0.4、遍历功能
+        Iterator iterator():就是用来获取集合中每一个元素。
+
+    3.0.5、长度功能
+        int size():获取集合中的元素个数
+    3.0.6、交集功能
+        boolean retainAll(Collection c):判断两个集合中是否有相同的元素
+    3.0.7、把集合转换成数组
+        Object[] toArray():把集合变成数组。
+
+    3.1、List接口
+    List接口为Collection直接接口。List所代表的是有序的Collection，即它用某个特定的插入顺序来维护元素顺序。
+    用户可以对列表中每个元素的插入位置进行精确地控制,同时可以根据元素的整数索引(在列表的位置)访问元素,并搜索列表中的元素。
+    实现List接口的集合主要有:ArrayList、LinkedList、Vector、Stack。
+
+    add方法用于添加一个元素到当前列表的末尾,也可以通过其重载形式指定添加的位置;
+
+    addAll方法用于添加一个集合到当前列表的末尾,主要用于批量添加;
+
+    remove方法用于删除列表中的一个元素,可以将需要删除的元素作为参数进行指定,也可以指定需要删除元素的下标;
+
+    removeAll方法用于一次删除多个元素,参数为集合,集合中包含需要删除的元素;
+
+    get方法用于通过下标获取对应下标的元素;
+
+    set方法用于修改对应下标的元素;
+
+    size方法用于获得集合的长度;
+
+    另外,还有几个类似的方法:
+
+    clear方法用于清除现有所有的元素：
+
+    contains方法用来查找某个对象在不在列表之中;
+  3.2、ArrayList
+    ArrayList是一个动态数组,也是我们最常用的集合。它允许任何符合规则的元素
+    插入甚至包括null。每一个ArrayList都有一个初始容量(10)，该容量代表了数组的大小。随着容器中
+    的元素不断增加,容器的大小也会随着增加。在每次向容器中增加元素的同时都会进行容
+    量检查,当快溢出时,就会进行扩容操作。所以如果我们明确所插入元素的多少,
+    最好指定一个初始容量值,避免过多的进行扩容操作而浪费时间、效率。
+
+    size、isEmpty、get、set、iterator和listIterator操作都以固定时间运行。add操作以分摊的固定时间运行，
+    也就是说,添加n个元素需要O(n)时间(由于要考虑到扩容，所以这不只是添加元素会带来分摊固定时间开销那样简单)。
+
+    ArrayList擅长于随机访问,ArrayList是非同步的。
+
+    示例:
+     package com.csw.javaSE.javase_6_集合;
+
+     import java.util.ArrayList;
+     import java.util.List;
+
+     public class ListDemo1 {
+
+         public static void main(String[] args) {
+
+             //定义list1集合,指定存放的数据类型,只能是引用类型
+             List<Integer> list1 = new ArrayList();
+
+             //添加单个元素
+             Integer n = 88;
+             list1.add(98);
+             list1.add(99);
+             list1.add(60);
+             list1.add(n);
+
+             //获得单个元素
+             int e1 = list1.get(0);//98
+             System.out.println("list1的第2个元素值为:"+list1.get(1));
+
+             //获得集合长度
+             System.out.println("长度为："+list1.size());
+
+             //遍历1
+             for(Integer item : list1){
+                 System.out.println("遍历:"+item);
+             }
+
+             //遍历2
+             for(int i = 0;i < list1.size(); i++){
+                 System.out.println(i+"="+list1.get(i));
+             }
+
+             //移除
+             //将下标为0的元素移除,当前面的元素移除时后面补上
+             list1.remove(0);
+             System.out.println("list1的第1个元素值为:"+list1.get(0));
+
+             //指定要移除的对象,把集合中的60移除
+             list1.remove(n);
+             //移除所有
+             list1.clear();
+
+             //获得集合长度
+             System.out.println("长度为:"+list1.size());
+         }
+     }
+  3.2.1、List基本操作
+
+   ArrayList<String> arrayList = new ArrayList<String>();
+
+     arrayList.add("Tom");
+     arrayList.add("Jerry");
+     arrayList.add("Micky");
+
+     使用Iterator遍历元素
+     Iterator<String> it = arrayList.iterator();
+         while(it.hasNext()){
+            String str = it.next();
+            System.out.println(str);
+         }
+     }
+     //在指定位置插入元素
+     arrayList.add(2,"kate");
+
+     //通过索引直接访问元素
+     for(int i = 0; i < arrayList.size();i++){
+        System.out.println(arrayList.get(i));
+     }
+
+     List<String> subList = new ArrayList<String>();
+     subList.add("Mike");
+     //addAll(Collection<? extends String> c)添加所给集合中的所有元素
+
+     arrayList.addAll(subList);
+
+     //判断是否包含某个元素
+     if(arrayList.contains("Mike")){
+        System.out.println("Mike is include in the list");
+     }
+
+     LinkedList<String> linkedList = new LinkedList<String>();
+
+     linkedList.addAll(arrayList);
+
+     //获取指定元素
+     System.out.println(linkedList.get(4));
+
+     //获取第一个元素
+     System.out.println(linkedList.getFirst());
+
+     //获取最后一个元素
+     System.out.println(linkedList.getLast());
+
+     //获取并删除第一个元素
+     System.out.println(linkedList.pollFirst());
+
+     //获取,但不移除第一个元素
+     System.out.println(linkedList.peekFirst());
+    }
+    3.2.2、List操作二
+
+    package com.csw.javaSE.javase_6_集合;
+
+    import java.util.ArrayList;
+    import java.util.List;
+
+    public class Collection01 {
+
+        public static void main(String[] args) {
+
+            //定义一个集合,只能存Integer
+            List<Integer> marks = new ArrayList<Integer>();
+
+            Integer k = 75;
+
+            //添加
+            marks.add(10);
+            marks.add(90);
+            marks.add(37);
+            marks.add(k);
+            marks.add(58);
+            marks.add(77);
+
+            //取值
+            System.out.println(marks.get(1));
+
+            //长度
+            System.out.println("个数："+marks.size());
+
+            //遍历
+            System.out.println("遍历:");
+            for (Integer n : marks){
+                System.out.println(n);
+            }
+
+            //根据索引删除
+            marks.remove(3);
+
+            //根据对象删除
+            marks.remove(k);
+
+            Integer d = null;
+
+            for(Integer j : marks){
+                if(j == 90){
+                    d = j;
+                    break;
+                }
+
+            }
+            marks.remove(d);
+
+            //修改
+            marks.set(0,9);//将下标0对应的值修改为9
+
+            //循环
+            System.out.println("循环：");
+            for(int i = 0; i < marks.size();i++){
+                System.out.println(marks.get(i));
+            }
+
+            //删除所有
+            marks.clear();
+            System.out.println("个数:"+marks.size());
+
+        }
+    }
+   结果：
+   90
+   个数：6
+   遍历:
+   10
+   90
+   37
+   75
+   58
+   77
+   循环：
+   9
+   37
+   58
+   77
+   个数:0
+  四、Map与HashMap
+   Map与List、Set接口不同,它是由一系列键值对组成的集合,提供了Key到Value的映射。同时它也没有继承
+   Collection。在Map中它保证了Key与value之间的一一对应关系。也就是说一个Key对应一个value，所以
+   它不能存在相同的key值,当然value值可以相同。实现map的有:
+    HashMap、TreeMap、HashTable、Properties、EnumMap。字典(Dictionary)
+
+   4.1、HashMap
+    以哈希表数据结构实现,查找对象时通过哈希函数计算其位置,它是为快速查询而设计的,其内部定义了一个hash表
+    数组(Entry[] table),元素会通过哈希转换函数将元素的哈希地址转换成数组中存放的索引,如果有冲突,则使用散列链表的形式
+    将所有相同哈希地址的元素串起来,可能通过查看HashMap.Entry的源码它是一个单链表结构。
+
+    key:键，唯一，钥匙，关键的
+
+   4.1.1、Map基本操作
+
+    HashMap<String,Integer> map = new HashMap<String,Integer>();
+       //向Map中添加元素
+       map.put("Tom",26);
+       map.put("Jack",18);
+       map.put("Micky",17);
+       map.put("kate",15);
+
+       //根据Key获取Value
+        System.out.println("Jack is" + map.get("Jack")+"yearsold");
+
+       //移除
+       map.remove("Micky");
+
+       //遍历Map
+       for(Entry<String,Integer> entry : map.entrySet()){
+            System.out.println("name:"+entry.getkey()+"age:"+entry.getValue());
+       }
+       //key相同的元素将被覆盖
+       map.put("Jack",19);
+
+       //根据key获取Value
+       System.out.println("Jack is" + map.get("Jack")+"years old");
+
+       //判断是否包含某个Key
+       if(map.containsKeyI("Tom")){
+            System.out.println(map.get("Tom"));
+       }
+
+       //判断是否包含某个Value
+       if(map.containsValue(26)){
+        System.out.println("The map include the value 26");
+       }
+
+       //判断map是否为空
+       if(!map.isEmpty()){
+
+            //获取map大小
+            System.out.println("The map' s size="+map.size());
+       }
+
+       //获取Key的集合
+       for(String str : map.keySet()){
+            System.out.println(str);
+       }
+
+       TreeMap<String,Integer> treeMap = new TreeMap<String,Integer>();
+       treeMap.putAll(map);
+
+       //输出内容按照key值排序
+       for(Entry<String,Integer> entry : treeMap.entrySet()){
+            System.out.println("name:" + entry.getKey()+ "age:"
+                + entry.getValue());
+            //name : Jack age:19
+            //name : Kate age:15
+            //name : Tom  age:26
+       }
+
+       LinkedHashMap<String,Integer> linkedHashMap = new LinkedHashMap<String,Integer>();
+
+       //向Map中添加元素
+       linkedHashMap.put("Tom",26);
+       linkedHashMap.put("Jack",18);
+       linkedHashMap.put("Micky",17);
+       linkedHashMap.put("Kate",15);
+
+       //保持了插入的顺序
+       for(Entry<String,Integer> entry: linkedHashMap.entrySet()){
+            System.out.println("name:"+entry.getKey()+"age:"+entry.getValue());
+            // name:Tom age:26
+            // name:Jack age:18
+            // name:Micky age:17
+            // name:Kate age:15
+       }
+
+     }
+
+    例子：StudentClient
+
+    4.1.2、Map操作二
+    Student
+
+   4.2、TreeMap
+
+   键以某种排序规则排序,内部以red-black(红-黑)树数据结构实现,实现了SortedMap接口
+
+   4.3、HashTable
+   也是以哈希表数据结构实现的,解决冲突时与HashMap也一样也是采用了散列链表的形式,不过性能比HashMap要低
+
+   五、Set与HashSet
+   Set是一种不包括重复元素的Collection。它维持它自己的内部排序,所以随机访问没有任何意义。与List一样,它
+   同样运行null的存在但是仅有一个。由于Set接口的特殊性,所有传入Set集合中的元素都必须不同,同时要注意任何可变对象,
+   如果在对集合中元素进行操作时,导致e1.equals(e2)==true,则必定会产生某些问题。实现了Set接口的集合有:EnumSet、HashSet、
+   TreeSet。
+
+    3.1、EnumSet
+     是枚举的专用Set。所有的元素都是枚举类型。
+    3.2、HashSet
+     HashSet堪称查询速度最快的集合,因为其内部是以HashCode来实现的。
+     它内部元素的顺序是由哈希码来决定的,所以它不保证set的迭代顺序;特别是它
+     不保证该顺序恒久不变。
+
+    例子：HashSet01
+
+   3.3、TreeSet
+   基于TreeMap,生成一个总是处于排序状态的set,内部以TreeMap来实现。它是使用元素
+   的自然顺序对元素进行排序,或者根据创建Set时提供的Comparator进行排序，具体取决于使用的构造方法。
+
+ 总结：
+                            有序否           允许元素重复否
+       Collection           否              是
+       List                 是              是
+
+       Set    AbstractSet   否              否
+       Set    HashSet       否              否
+       Set    TreeSet       是(用二叉树排序)  否
+
+       Map    AbstractSet   否              使用key-value来映射和存储数据
+       Map    HashMap       否              key必须唯一
+       Map    TreeMap       是(用二叉树排序)  value可以重复
+
+
+
+
+
+
+
+

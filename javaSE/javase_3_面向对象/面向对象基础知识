@@ -1,0 +1,977 @@
+
+ 一、理解类与对象及他们间的关系
+ 面向对象中对象与类是最重要的，先来理解对象、类及他们间的关系。
+
+ 1.1、对象
+  世界万物都是对象(object)，在面向对象中一切都是对象
+  例如：人、动物、植物
+  对象：系统中用来描述客观事物的实体，构成系统的基本单位
+  对象封装了属性（特征）和方法（操作）
+  收银人（对象）：布兰妮         顾客（对象）：朱丽叶
+    特征（属性）：              特征（属性）：
+    姓名：布兰妮               姓名：朱丽叶
+    年龄：35                  年龄：28
+    体重：160千克              体重：43千克
+
+    操作（方法）：              操作（方法）：
+    收款                      购买商品
+    打印账单                   付款
+  1.2、类
+  猜猜下面描述的是什么：
+  属性：有排量、有速度、有油耗、有2-5个座位、有四个轮子
+  方法：载客、加速、转向、行驶、鸣笛
+  对象（轿车）
+  类：是拥有共同属性和方法的对象的抽象
+  1.3类与对象间的关系
+  类是抽象的，是概念，是类型，是一类事务的统称
+  对象是具体的，是真实的，特指的，是独一无二的
+  类是模子，确定对象将会拥有的特征（属性）和行为（方法）
+  类是对象的类型
+  对象是类的实例
+  类：
+  package com.zhangguo.c321;
+
+  /**冰激凌模具*/
+  public class Box {
+      /**高度*/
+      public int h;
+      /**宽度*/
+      public int w;
+
+      /**展示方法*/
+      public void show(){
+          System.out.println("这个冰激凌模具的高度是："+h+"，宽度"+w);
+      }
+  }
+  测试：
+  package com.zhangguo.c321;
+
+  public class BoxClient {
+
+      public static void main(String[] args) {
+          //创建对象，指定对象类型
+          Box m1=new Box();
+          //给对象的属性赋值
+          m1.h=70;
+          m1.w=30;
+          //调用方法
+          m1.show();
+
+          //new Box()：创建对象，实例化对象，Box m2：指定对象类型，和对象名
+          Box m2=new Box();
+          //给属性赋值
+          m2.h=15;
+          m2.w=40;
+          //输出结果
+          m2.show();
+
+          int i=1;
+         double money=1.5;
+
+      }
+
+  }
+
+  运行结果：
+  这个冰激凌模具的高度是：70，宽度30
+  这个冰激凌模具的高度是：15，宽度40
+
+  静态（static）的属于类，用类名调用，对象名也可以，只有一份，共享
+
+  非静态的属于对象，用对象调用，有多份，独享
+  package com.zhangguo.c321;
+
+  /**冰激凌模具*/
+  public class Box {
+      /**属性，成员变量 final表示最终的，PI不能被修改，static表示静态的*/
+      public static double PI=3.14;
+      /**高度*/
+      public int h;
+      /**宽度*/
+      public int w;
+
+      /**展示方法*/
+      public void show(){
+          System.out.println("这个冰激凌模具的高度是："+h+"，宽度"+w);
+      }
+  }
+
+  package com.zhangguo.c321;
+
+  /**冰激凌模具*/
+  public class Box {
+      /**属性，成员变量 final表示最终的，PI不能被修改，static表示静态的*/
+      public static double PI=3.14;
+      /**高度*/
+      public int h;
+      /**宽度*/
+      public int w;
+
+      /**展示方法*/
+      public void show(){
+          System.out.println("这个冰激凌模具的高度是："+h+"，宽度"+w);
+      }
+  }
+  运行结果：
+  3.14
+  3.16
+
+  二、了解面向对象编程的意义
+  面向对象编程（Object Oriented Programming, OOP）是一种计算机拟人类的
+  自然思维方式的编程架构技术，解决了传统结构化开发中客观世界描述工具与软件结构的不一致问题
+
+  面向对象编程是相对面向过程的，如C语言
+  Java是纯面向对象编程语言
+  面向对象中最重要的是对象与类
+
+  三、定义类与实例化对象
+  3.1、定义类
+  所有Java程序都以类class为组织单元
+
+  关键字class定义自定义的数据类型
+
+  类将现实世界中的概念模拟到计算机程序中
+  定义类的基本结构：
+  public class  类名 {
+                 //定义属性部分
+                 属性1的类型 属性1;
+                 属性2的类型 属性2;
+                        …
+                 属性n的类型 属性n;
+
+                 //定义方法部分
+                 方法1;
+                 方法2;
+                       …
+                 方法m;
+  }
+
+  定义一个类的步骤
+  1、定义类名
+  2、编写类的属性
+  3、编写类的方法
+
+  定义一个类用来抽象圆形
+  //1包
+  package com.gdnf.java.d1;
+
+  //注释
+  /**
+   *圆
+   */
+  //2类
+  public class Circle {
+
+      /**圆周率*/
+      //7常量，不能被修改，静态成员可以直接访问
+      public static final double PI=3.1415926;
+
+
+      /**半径*/
+      //3属性(成员变量，方法内的变量叫局部变量不能被访问修饰符)
+      //命名：数字，字母，下划线，$组成；camel 骆驼命名法，首字母小写，从第2个单词开始大写
+      //成员变量有默认值，数字一般为0，字符为null
+      public int radiusLength;
+
+      /**获得面积*/
+      //4方法，完成特定功能的代码块
+      public double getArea()
+      {
+          //5局部变量
+          double result=PI*radiusLength*radiusLength;
+          //将结果返回
+          return result;
+      }
+
+  }
+
+  类的定义：
+    package com.zhangguo.c321;
+
+    /**类 圆*/
+    public class Circle {
+        /**常量*/
+        public final static double PI=3.14;
+
+        /**属性 半径*/
+        public double r;
+
+        /**方法 计算面积*/
+        public double area(){
+            double result=PI*r*r;
+            return result;
+        }
+
+        /**方法 计算周长*/
+        public double len(){
+            double result=2*PI*r;
+            return result;
+        }
+    }
+  测试：
+  package com.zhangguo.c321;
+
+  public class TestCircle {
+
+      public static void main(String[] args) {
+          Circle c1=new Circle();
+          c1.r=13.57;
+          System.out.println(c1.area());
+          System.out.println(c1.len());
+
+          Circle c2=new Circle();
+          c2.r=89.88;
+          System.out.println(c2.area());
+          System.out.println(c2.len());
+
+      }
+
+  }
+
+  运行结果：
+  578.21498600000001
+  85.2196
+  25366.221216
+  564.4464
+
+  3.2实例化对象
+  类是抽象的，并不能直接使用，将类型实例化后使可以动态应用了
+
+  创建对象的步骤：
+  a).使用new创建类的一个对象
+  类型名  对象名  = new  类型名();
+
+  b).使用对象:使用 "."进行以下操作
+  给类的属性赋值：对象名.属性
+  调用类的方法：对象名.方法名()
+
+  package com.gdnf.java.d1;
+
+  /**游戏类*/
+  public class Game {
+
+      /**主方法，程序的入口*/
+      public static void main(String[] args) {
+          //6对象，实例化对象
+          Circle c1=new Circle();
+          c1.radiusLength=10;
+
+          Circle c2=new Circle();
+          c2.radiusLength=5;
+
+          //方法调用
+          System.out.println(c1.getArea());
+
+          System.out.println(c2.getArea());
+
+          //静态的成员属于类，非静态成员属于对象
+          //静态的是公用的，在内存中只有一份
+          System.out.println("PI="+Circle.PI+"，"+c1.PI);
+
+
+
+      }
+
+  }
+
+  运行结果:
+  314.15926
+  78.539815
+  PI=3.1415926 , 3.1415926,
+
+  四、区别引用类型与值类型
+
+  五、方法
+  5.1、类中的成员
+  类文件中有：包(package)、类(class)、成员变量/属性(attribute)、
+  方法(method)、常量(const,final)、对象(object)、局部变量(variable)
+
+  圆：
+  //1包
+  package com.gdnf.java.d1;
+
+  //注释
+  /**
+   *圆
+   */
+  //2类
+  public class Circle {
+
+      /**圆周率*/
+      //7常量，不能被修改，静态成员可以直接访问
+      public static final double PI=3.1415926;
+
+
+      /**半径*/
+      //3属性(成员变量，方法内的变量叫局部变量不能被访问修饰符)
+      //命名：数字，字母，下划线，$组成；camel 骆驼命名法，首字母小写，从第2个单词开始大写
+      //成员变量有默认值，数字一般为0，字符为null
+      public int radiusLength;
+
+      /**获得面积*/
+      //4方法，完成特定功能的代码块
+      public double getArea()
+      {
+          //5局部变量
+          double result=PI*radiusLength*radiusLength;
+          //将结果返回
+          return result;
+      }
+
+  }
+
+  客户端调用：
+  package com.gdnf.java.d1;
+
+  /**游戏类*/
+  public class Game {
+
+      /**主方法，程序的入口*/
+      public static void main(String[] args) {
+          //6对象，实例化对象
+          Circle c1=new Circle();
+          c1.radiusLength=10;
+
+          Circle c2=new Circle();
+          c2.radiusLength=5;
+
+          //方法调用
+          System.out.println(c1.getArea());
+
+          System.out.println(c2.getArea());
+
+          //静态的成员属于类，非静态成员属于对象
+          //静态的是公用的，在内存中只有一份
+          System.out.println("PI="+Circle.PI);
+
+
+
+      }
+
+  }
+
+  运行结果：
+  314.15926
+  78.539815
+  PI=3.1415926
+
+  //创建对象，c1是对类的对象
+
+  Circle  c1 = new Circle();
+
+  //通过对象名访问对象的属性 "半径"
+  c1.radiusLength = 10;
+
+  对象名.属性名;
+  //通过对象名访问对象的方法getArea()获取圆的面积
+  c1.getArea()
+  对象名.方法名(参数);
+
+  5.2、方法的定义与调用
+  5.2.1、概要
+
+  方法：根据参数完成特定功能的代码块
+
+  如方法 public int add(int n1,int n2)，int是返回值的类型，
+  n1,n2参数，完成的功能相加
+
+  语法：访问修饰符  返回值类型  方法名 ([参数类型  参数名]...){
+
+        方法体
+        [return 返回值]
+  }
+
+  如果返回值为void则表示没有返回值,其他情况必须有返回值
+  package com.gdnf.java.d1;
+
+  /**计算器*/
+  public class Calc {
+
+      /**加法方法*/
+      public int add(int n1,int n2){
+          //返回结果
+          return n1+n2;
+      }
+
+  }
+
+  调用：
+  package com.gdnf.java.d1;
+
+  /***/
+  public class Computer {
+      public static void main(String[] args) {
+          //创建对象
+          Calc calc=new Calc();
+          System.out.println("1+1="+calc.add(1, 1));
+      }
+  }
+
+  运行结果:
+  1 + 1 = 2
+
+  5.2.2、没有返回值的方法
+  package com.gdnf.java.d1;
+
+  /**计算器*/
+  public class Calc {
+
+      /**显示信息*/
+      public void show(String msg){
+          System.out.println("神算子计算器告诉你结果："+msg);
+      }
+
+  }
+
+  调用：
+  package com.gdnf.java.d1;
+
+  /***/
+  public class Computer {
+      public static void main(String[] args) {
+          //创建对象
+          Calc calc=new Calc();
+          calc.show("1+1="+calc.add(1, 1));
+          calc.show(985+"");
+      }
+  }
+
+  结果：
+  神算子计算器告诉你结果：1 + 1 = 2
+  神算子计算器告诉你结果：985
+
+  当方法的返回值声明为 "void"时方法没有返回值
+
+  5.2.4、重载
+
+  同名的方法不同参数，与返回值没有关系
+  package com.gdnf.java.d1;
+
+  /**计算器*/
+  public class Calc {
+
+      /**显示信息*/
+      public void show(String msg){
+          System.out.println("神算子计算器告诉你结果："+msg);
+      }
+
+      /**显示信息*/
+      public void show(Object msg){
+          System.out.println("超算子计算器告诉你结果："+msg);
+      }
+
+      /**加法方法*/
+      public int add(int n1,int n2){
+          //返回结果
+          return n1+n2;
+      }
+
+  }
+
+  运行结果：
+  package com.gdnf.java.d1;
+
+  /***/
+  public class Computer {
+      public static void main(String[] args) {
+          //创建对象
+          Calc calc=new Calc();
+          calc.show("1+1="+calc.add(1, 1));
+          calc.show(985+"");
+
+
+          calc.show(19.8);
+          calc.show(true);
+          calc.show("1+5=6");
+      }
+  }
+
+  运行结果：
+  神算子计算器告诉你结果：1 + 1 = 2
+  神算子计算器告诉你结果：985
+  超算子计算器告诉你结果：19.8
+  超算子计算器告诉你结果：true
+  超算子计算器告诉你结果：1 + 5 = 6
+
+  方法定义：
+  package com.gdnf.java.d3;
+
+  public class Calc {
+
+      public static void main(String[] args) {
+
+          $("程序开始");
+
+          Calc c=new Calc();
+          c.fun(1,100);
+          c.fun(1,95);
+          c.fun(98,105);
+
+          c.fun(1, c.fun(1, 10));
+
+          $("程序结束");
+      }
+
+      public int fun(int s,int e){
+          int sum=0;
+          for (int i = s; i <=e; i++) {
+              sum+=i;
+          }
+          $(sum);
+          return sum;
+      }
+
+      public static void $(Object str){
+          System.out.println("控制台输出："+str);
+      }
+
+  }
+
+  输出：
+
+  控制台输出：程序开始
+  控制台输出：5050
+  控制台输出：4560
+  控制台输出：812
+  控制台输出：55
+  控制台输出：1540
+  控制台输出：程序结束
+
+  六、变量的作用域
+  a)、方法内可以直接调用成员变量
+  b)、方法中的局部变量间不允许相互访问
+  c)、内部可以无限访问外部，外部不允许访问内部，注意静态
+  d)、成员变量定于就有默认值，局部变量没有默认值
+
+  package com.gdnf.java.d3;
+
+  public class Point {
+
+      public int x;
+      public int y;
+
+      //方法内可以直接调用成员变量
+      public void set(int n1,int n2)
+      {
+          int i=100;
+          this.x=n1;
+          this.y=n2;
+          System.out.println("x:"+this.x+"，y:"+this.y);  //this表示当前对象
+      }
+
+      public void add(int n3,int n4){
+          //i++;  //访问set方法的i是错误的
+          int j=0;
+          if(n3>100){
+              j++;
+              int k=0;
+              if(n4>200)
+              {
+                  k++;
+              }
+          }
+      }
+
+
+  }
+
+  七、掌握使用static静态关键字
+
+  静态成员属于类，用类调用，是所有对象共享的，实例成员是独享。
+  直接用类名可以获得静态成员，当然对象名也可以但不推荐
+
+  package com.gdnf.java.d1;
+
+  /**计数器*/
+  public class Counter {
+
+      public int n1;
+
+      public static int n2;
+
+      public void show(){
+          System.out.println("n1="+n1+"，n2="+n2);
+      }
+  }
+
+  调用
+  package com.gdnf.java.d1;
+
+  public class CounterClient {
+
+      public static void main(String[] args) {
+
+          Counter c1=new Counter();
+          c1.n1++;
+
+          Counter c2=new Counter();
+          c2.n1++;
+
+          c1.show();
+          c2.show();
+
+      }
+
+  }
+
+  结果：
+  n1 =1,n2 = 0
+  n1 =1,n2 = 0
+
+  package com.gdnf.java.d1;
+
+  /**计数器*/
+  public class Counter {
+      //每个实例独享
+      public int n1;
+      //所有实例与类共享，只有一份
+      public static int n2;
+
+      public void show(){
+          System.out.println("n1="+n1+"，n2="+n2);
+      }
+  }
+
+  调用：
+  package com.gdnf.java.d1;
+
+  public class CounterClient {
+
+      public static void main(String[] args) {
+
+          Counter c1=new Counter();
+          c1.n2++;
+          c1.n1++;
+
+          Counter c2=new Counter();
+          c2.n2++;
+          c2.n1++;
+
+          //静态成员属于类，直接用类名调用
+          Counter.n2++;
+          //Counter.n1++;  不允许直接用类名调用非静态成员
+
+          c1.show();
+          c2.show();
+
+      }
+
+  }
+
+  结果：
+  n1 =1,n2 =3
+  n1 =1,n2 =3
+
+  a)、静态方法可以直接调用静态方法
+
+  package com.gdnf.java.d1;
+
+  /**计数器*/
+  public class Counter{
+    //每个实例独享
+    public int n2;
+
+    //所有实例与类共享，只有一份
+    public static int n2;
+
+    public void  show(){
+        show("n1="+n1+",n2"+n2);
+    }
+
+    //静态方法，完成显示
+    public static void show(Object message){
+        System.out.pringln("输出结果："+message);
+    }
+
+    //静态方法，完成剑法
+    public static void subtract(int n2,int n1){
+        //静态调用静态 直接
+        show("n2-n1="+(n2-n1));
+    }
+
+    //非静态方法，完成乘法
+    public void mutil(int n1,int n2){
+        //非静态调用静态,直接
+        show(n1*n2);
+    }
+
+  }
+
+  b)、静态方法不允许直接调用非静态方法，只能通过对象调用
+
+  package com.gdnf.java.d1;
+
+  /**计数器*/
+  public  class Counter{
+    //每个实例独享
+    public int n1;
+
+    //所有实例与类共享，只有一份
+    public static int n2;
+
+    public void show(){
+        show("n1="+n1+",n2="+n2);
+    }
+
+    //静态方法，完成显示
+    public static void show(Object message){
+        System.out.pringln("输出结果："+message);
+    }
+
+    //静态方法,完成减法
+    public static void subtract(int n2,int n1){
+        //静态调用静态直接
+        show("n2-n1="+(n2-n1));
+
+        //静态不能直接调用非静态
+        //mutil(100,200);报错
+        //静态方法可以通过对象名调用非静态
+        Counter counter = new Counter();
+        counter.mutil(100,200);
+    }
+
+    //非静态方法,完成乘法
+    public void mutil(int n1,int n2){
+
+        //非静态调用静态，直接
+        show(n1*n2);
+    }
+
+  }
+
+  静态调用非静态必须通过对象名调用，需实例化对象
+
+  package com.gdnf.java.d1;
+
+  public class Student{
+
+    int i = 100;
+    public static void main(String[] args){
+        Student tom = new Student();
+        System.out.pringln(tom.i);
+    }
+  }
+  a).static可以修饰：类，变量，方法
+  b).static修饰的变量只有一个副本
+  c).static修饰的方法里面不能引用非静态变量
+  d).static修饰的方法里面不能引用this关键字
+  e).static方法不能被非静态方法重写
+
+  八、掌握创建包和导入包
+   8.1、包的意义
+   为了更好地组织类,java提供了包机制，用于区别类名的命名空间。
+   包的作用
+   1、把功能相似或相关的类或接口组织在同一个包中，方便类的查找和使用。
+   分文别类
+   2、如同文件夹一样，包也采用了树形目录的存储方式。
+   3、包也限定了访问权限，拥有包访问权限才能访问某个包中的类。
+   Java使用包(package)这种机制是为了防止命名冲突，访问控制，提供搜索和
+   定位类(class)、接口、枚举(enumerations)和注解(annotation)等
+
+   8.2、定义包
+   使用package声明包、一般使和倒置的域名，如com.zhongguo.项目名.具体分类
+
+   8.3、导入包
+   为了能够使用某一个包的成员，我们需要在Java程序中明确导入该包。使用"import"语句可完成此功能
+
+   当使用一个类时,如果类不在当前包中则应该先导入包或用全名称引用。
+
+   8.3.1、导入自定义包
+   第一个Palyer类：
+
+   package com.zhangguo.game;//包
+
+   //玩家类
+   public class Player{
+
+      //属性，默认访问修饰符
+      String name;
+
+      //展示
+      public void show(){
+        System.out.pringln("当前玩家是:"+this.name);
+      }
+   }
+
+   //public
+   //可以被任何类访问
+
+   //protected
+   //可以被同一包中的所有类访问
+   //可以被所有子类访问
+   //子类没有在同一包中也可以访问
+
+   //private
+   //只能被当前类的方法访问
+   //缺省(无访问修饰符)
+
+   //default 不写
+   //可以被同一包中的所有类访问
+   //如果子类没有在同一包中，也不能访问
+
+    第二个Player类
+
+    package com.zhangguo.project;
+
+    public class Player{
+        public void msg(){
+            System.out.pringln("我是一个运行员");
+        }
+    }
+
+    使用：
+    package com.zhangguo.test;
+
+    //导入包，如果是*号则表示包下的所有类
+    //import com.zhongguo.game.*;
+    //导入单个类Player
+    import com.zhangguo.game.Player;
+
+    public class PlayerTest{
+
+        //实例化对象
+        Player player = new Player();
+
+        //访问属性
+        player.name="西门吹雪";
+
+        //调用方法
+        player.show();
+
+        //全名称引用
+        com.zhangguo.project.Player hero = new
+        com.zhangguo.project.Player();
+        hero.msg();
+    }
+
+    运行结果:
+    当前玩家是:西门吹雪
+    我是一个运行员
+
+    8.3.2、导入系统包
+    package com.gdnf.java.d3;
+
+    //导入系统已定义好的类
+    import java.util.Date;
+
+    public class Person {
+
+        public static void main(String[] args) {
+            System.out.println("Hello java.lang");
+
+            Date date=new Date();
+            System.out.println("当前时间："+date.toLocaleString());
+        }
+
+    }
+
+    运行结果：
+    Hello.java.lang
+    当前时间:2017-3-30 11：19：25
+
+   九、Java中的各种修饰符
+   9.1、类
+   访问修饰符 修饰符 class  类名称 extends 父类名称 implement 接口名称
+
+   （访问修饰符与修饰符的位置可以互换）
+
+   访问修饰符
+
+   名称      说明                           备注
+   public   可以被所有类访问(使用)            public类必须定义在和类名相同的同名文件中
+
+   package  可以被同一个包中类访问(使用)       默认的访问权限，可以省略此关键字，可以定义在和public类的同一个文件中
+
+   final    使用此修饰符的类不能被继承
+
+   abstract  如果要使用abstract类，之前      类只要有一个abstract方法，类就必须定义为
+             必须首先建一个继承abstract类     abstract,但abstract类不一定非要保护abstract方法不可
+             的新类，新类中实现abstract类
+             中的抽象方法。
+   9.2、变量
+
+   |   Java中没有全局变量，只有方法变量、实例变量(类中的非静态变量)、
+       类变量(类中的静态变量)。
+   |   方法中的变量不能够有访问修饰符。所以下面访问修饰符表仅针对于在类中定义的变量。
+
+   |   声明实例变量时,如果没有赋初始值，将被初始化为null(引用类型)或者0、false(原始类型)。
+
+   |   可以通过实例变量初始化器来初始化较复杂的实例变量，实例变量初始化器是一个用{}包含的语句块
+   在类的构造器被调用时运行，运行于父类构造器之后，构造器之前。
+
+   |   类变量（静态变量）也可以通过类变量初始化器来进行初始化，类变量初始化器是一个用static{}
+   包含的语句块,只可能被初始化一次
+
+
+   修饰符
+   名称             说明               备注
+   static     静态变量(又称为类变量,    可以被所有实例共享。
+              其它的称为实例变量)       并不需要创建类的实例就可以访问静态变量
+
+   final      常量,值只能够分配一次，    注意不要使用const，（每次实例维护一个拷贝成本大）
+              不能更改
+
+   transient  告诉编译器，在类对象序列化  主要是因为改变量可以通过其它变量来得到，使用
+              时，此变量不需要持久保存   它是为了性能的问题
+
+   volatile   指出可能有多个线程修改此变量，
+              要求编译器优化以保证对此变量的修改能够
+              被正确的处理
+
+   9.3、方法
+    访问修饰符  修饰符  返问类型  方法名称 (参数列表) throws 违例列表
+
+    | 类的构造器方法不能够有修饰符、返回类型和throws子句
+
+    | 类的构造器方法被调用时，它首先调用符类的构造器方法，然后
+    运行实例变量和静态变量的初始化器，然后才运行构造器本身。
+
+    | 如果构造器方法没有显示的调用一个符类的构造器，那么编译器
+    会自动为它加上一个默认的super(),而如果父类又没有默认的无参数构造器，编译器就会报错。
+    super必须是构造器的第一个子句。
+
+    | 注意理解private构造器方法的使用技巧
+
+    访问修饰符
+
+    名称         说明               备注
+    public      可以从所有类访问
+
+    protected   可以被同一包中的所有类
+                访问
+
+                可以被所有子类访问    子类没有在同一个包中
+                                   也可以访问
+    private     只能够被当前类的方法
+                访问
+
+    缺省         可以被同一包中的所有   如果子类没有在同一个包中，
+    无访问修饰符   类访问              也不能访问
+
+    static      静态方法(又称为类方法,  提供不依赖于类实例的服务
+                其它的称为实例方法)    并不需要创建类的实例就可以
+                                    访问静态方法
+    final       防止任何子类重载该方法   可以同static一起使用，
+                                    避免对类的每个实例维护一个拷贝
+    abstract    抽象方法，类中已声明而   不能将static方法、final方法或者类的
+                没有实现的方法          构造器方法声明为abstract
+    native      用于C、C++编写的。     参见Sun的Java Native接口(JNl)
+                用该修饰符定义的方法没   JNl提供了运行时加载一个native方法的实现，
+                有实现                并将其于一个Java类关联的功能
+    synchronized 多线程的支持          当一个此方法被调用时，没有其它线程
+                                     能够调用该方法，其它的synchronized方法也不能调用该方法，
+                                     直到该方法返回
+    9.4、接口
+
+    访问修饰符 interface  接口名称 extends 接口列表
+
+    |接口不能够定义其声明的方法的任何实现
+
+    |接口中的变量总是需要定义为"public static final 接口名称",但
+    可以不包含这些修饰符，编译器默认就是这样，显示的包含修饰符主要是为了
+    程序清晰
+
+    访问修饰符
+    名称               说明
+    public             所有
+    无访问修饰符(默认)    同一个包内

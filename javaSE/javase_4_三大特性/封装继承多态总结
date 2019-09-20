@@ -1,0 +1,986 @@
+
+ 一、封装
+  简单说封装就是将同一类事物的特性与功能包装在一起，对外暴露调用的接口。
+
+  封装：封装也称信息隐藏，是指利用抽象数据类型把数据和基于数据的操作封装起来，
+  使其成为一个不可分割的整体，数据隐藏在抽象数据内部，尽可能的隐藏数据细节，
+  只保留一些接口使其与外界发生联系。也就是说用户无需知道内部的数据和方法的具体
+  实现细节，只需根据留在外部的接口进行操作就行。
+
+  封装的好处：
+  1）实现了专业的分工
+  2）良好的封装能够减少耦合
+  3）类内部的结构能够自由修改
+  4）可以对成员进行更精确的控制
+  5）隐藏信息，实现细节
+
+  1.1、为什么需要封装
+  定义一个学生类，在类中定义学生身高。
+
+  Student类：
+
+  package com.zhangguo.c41;
+
+  /**学生类*/
+  public class Student{
+
+    /**身高*/
+    public int height;
+
+    /**展示*/
+    public void show(){
+        System.out.pringln("身高："+this.height+"cm");
+    }
+  }
+
+  School类型：
+  package com.zhangguo.c41;
+
+  public class School {
+
+      public static void main(String[] args) {
+
+          Student tom=new Student();
+          tom.height=189;
+          tom.show();
+
+          Student rose=new Student();
+          rose.height=-398;
+          rose.show();
+      }
+
+  }
+
+  运行结果：
+  身高：189cm
+  身高：-398cm
+
+  从示例中可以看出rose这个学生的对象的身高达-398cm这明显不科学，
+  将属性封装起来，对外提供访问接口。
+
+  1.2、封装属性
+  如果要保护height这个属性，可以将它的访问修饰符修改为私有的，如下所示：
+  /**身高*/
+  private int height;
+
+  报错了：
+  Student tom = new Student();
+  tom.height= 189;//无法调用该属性，因为定位为私有的
+  tom.show();
+
+  Student rose = new Student();
+  rose.height=-398;
+  rose.show();
+  //因为是私有的，只有本类可以正常访问，外部访问不了，
+  可以定为属性达到访问控制与封装的功能，如下所示：
+
+  Student类
+
+  package com.zhangguo.c41;
+
+  /**学生类*/
+  public class Student{
+    /**身高*/
+    private int height;
+
+    /**返回身高属性*/
+    public int getHeight(){
+        return this.height;
+    }
+
+    /**
+     *设置身高属性
+     *
+     *@throws Exception
+     */
+     public void setHeight(int height){
+        //如果参数height大于260或小于0
+        if(height < 0 || height > 260){
+            //输出错误信息
+            System.out.pringln("身高只能是0-260之间");
+        }else{
+            this.height = height;
+        }
+     }
+
+     /**展示*/
+     public void show(){
+        System.out.pringln("身高:"+this.height+"cm");
+     }
+  }
+
+  学生类:
+
+  package com.zhangguo.c41;
+  public class School {
+
+      public static void main(String[] args) {
+
+          Student tom=new Student();
+          tom.setHeight(189);
+          tom.show();
+
+          Student rose=new Student();
+          rose.setHeight(-398);
+          rose.show();
+      }
+
+  }
+
+  运行结果：
+  身高：189cm
+  身高只能是0-260之间
+  身高：0cm
+
+  getXXX()获得，setXX(参数)设置
+
+  1.3、自动封装属性
+
+  如果在一个类中定义了非常多的属性，手动封装是很麻烦的，
+  1个属性对应2个方法，1个get，1个set。
+  Eclipse中有自动封装属性的功能，如下所示：
+  1.3.1、创建单个
+  将鼠标悬停在属性上，点击"create getter and setter for xxx"
+
+  生成的结果：
+  package com.zhangguo.c41;
+
+  /**狗*/
+  public class Dog {
+      /**名称*/
+      private String name;
+      /**价格*/
+      private float price;
+      /**颜色*/
+      private String color;
+
+      //可读可写
+      public float getPrice() {
+          return price;
+      }
+      public void setPrice(float price) {
+          this.price = price;
+      }
+      //只读
+      public String getName() {
+          return name;
+      }
+      //只写
+      public void setColor(String color) {
+          this.color = color;
+      }
+
+  }
+
+  二、继承
+  2.1、Java继承概要
+  Java继承是面向对象的最显著的一个特征。继承是从已有的类中派生出新
+  的类，新的类能吸收已有的数据属性和行为，并能扩展新的能力。Java不
+  支持多继承，单继承使Java的继承关系很简单，一个类只能有一个父类，
+  易于管理程序，父类是子类的一般化，子类是父类的特殊化(具体化)
+
+  父类（基类）：人  子类（派生） ： 学生
+  学生继承人，人派生出学生
+
+  继承所表达的就是一种对象类之间的相交关系，它使得某类对象可以继承另外一类
+  对象的数据便具有类A的全部或部分性质(数据属性)和功能(操作),我们称
+  被继承类A为基类、父类或超类，而称继承类B为A的派生类或子类。
+
+  继承避免了对一般类和特殊类之间共同特征进行的重复描述。同时，通过继承可以
+  清晰地表达每一项共同特征所适应的概念范围————在一般类中定义的属性和操作适应
+  于这个类本身以及它一下的每一层特殊类的全部对象。运用继承原则使得系统模型
+  比较简练也比较清晰。
+
+  Java使用extends关键字标识继承。
+
+  2.2、为什么需要继承
+  Dog狗
+
+  package com.zhongguo.c42;
+
+  /**狗*/
+  public class Dog{
+    /**名称*/
+    public String name;
+
+    /**颜色*/
+    public String color;
+
+    /**价格*/
+    public double price;
+
+    /**显示信息*/
+    public void show(){
+        System.out.pringln("名称："+name+",颜色："+color);
+    }
+  }
+
+  Cat猫
+
+  package com.zhangguo.c42;
+
+  /**猫*/
+  public class Cat{
+    /**名称*/
+    public String name;
+
+    /**颜色*/
+    public String color;
+
+    /**重量*/
+    public double weight;
+
+    /**显示信息*/
+    public void show(){
+        System.out.pringln("名称："+name+"，颜色"+color);
+    }
+  }
+
+  Zoo动物园
+  package com.zhangguo.c42;
+
+  /**动物园*/
+  public class Zoo {
+
+      public static void main(String[] args) {
+          Dog dog=new Dog();
+          dog.name="吉娃娃狗";
+          dog.color="绿色";
+          dog.price=19800.7;
+          dog.show();
+
+          Cat cat=new Cat();
+          cat.name="波斯猫";
+          cat.color="红色";
+          cat.weight=18.5;
+          cat.show();
+
+      }
+
+  }
+
+  运行结果：
+  名称：吉娃娃狗，颜色：绿色
+  名称：波斯猫，颜色：红色
+
+  上面的代码实现了基本功能，但有问题，主要是：
+  name,color,show重复,如果系统中的动物类再增加将不停的重复，重复就
+  会带来不便修改，不便维护的问题。
+
+  2.3、实现继承
+  要解决上面的问题可以使用继承，达到代码复用的目的。
+
+  Animal动物：
+
+  package com.zhangguo.c43;
+
+  /**动物*/
+  public class Animal{
+     /**名称*/
+     public String name;
+
+     /**颜色*/
+     public String color;
+
+     /**显示信息*/
+     public void show(){
+        System.out.pringln("名称："+name+",颜色："+color);
+     }
+  }
+
+  Dog狗：
+  package com.zhangguo.c43;
+
+  /**狗继承自动物，子类is a 父类*/
+  public class Dog extends Animal{
+    /**价格*/
+    public double price;
+  }
+
+  Cat猫：
+  package com.zhangguo.c43;
+
+  /**猫*/
+  public class Cat extends Animal {
+      /**重量*/
+      public double weight;
+  }
+
+  Zoo动物园：
+  package com.zhangguo.c43;
+
+  /**动物园*/
+  public class Zoo {
+
+      public static void main(String[] args) {
+          Dog dog=new Dog();
+          dog.name="吉娃娃狗";
+          dog.color="绿色";
+          dog.price=19800.7;
+          dog.show();
+
+          Cat cat=new Cat();
+          cat.name="波斯猫";
+          cat.color="红色";
+          cat.weight=18.5;
+          cat.show();
+
+      }
+
+  }
+
+  运行结果：
+  名称：吉娃娃狗，颜色：绿色
+  名称;波斯猫，颜色：红色
+
+  从示例中可见dog并没有定义color属性，但在使用中可以调用，
+  是因为dog继承了父类Animal，父类的非私有成员将被子类继承。
+  如果再定义其它的动物类则无须再反复定义name,color与show方法。
+
+  2.2、Java继承的特征
+  2.2.1、传递性
+  若类C继承类B，类B继承类A(多继承)，则类C既有从类B那里继承下来
+  的属性与方法，也有从类A那里继承下来的属性与方法，还可以有自己新
+  定义的属性和方法。继承来的属性和方法尽管是隐式的，但仍是类C的
+  属性和方法。
+
+  2.2.2、单根性
+  若类B继承类A，那么建立类B时只需要再描述与基类(类A)不同的少量特征
+  (数据成员和成员方法)即可。这种做法能减少代码和数据冗余度，大大增加
+  程序的重用性。
+
+  2.2.3、子类调用父类成员
+  1、使用super关键字调用父类成员
+
+  2、子类默认会先调用父类的无参构造方法，如果父没有则报错，
+  可以手动指定，但必须在第一行
+
+  动物：
+  package com.zhangguo.c43;
+
+  /**动物*/
+  public class Animal {
+      /**名称*/
+      public String name;
+      /**颜色*/
+      public String color;
+
+      public Animal() {
+          System.out.println("这是动物类的空构造方法");
+      }
+
+      public Animal(String name, String color) {
+          this.name = name;
+          this.color = color;
+      }
+
+      /**显示信息*/
+      public void show(){
+          System.out.println("名称："+name+"，颜色："+color);
+      }
+  }
+  狗：
+  package com.zhangguo.c43;
+
+  /**狗继承自动物，子类 is a 父类*/
+  public class Dog extends Animal {
+      public Dog(String name, String color,double price) {
+          super(name,color);  //调用父类构造方法
+          this.price=price;  //调用当前对象的成员
+      }
+
+      /**价格*/
+      public double price;
+
+      /**重写父类方法*/
+      public void show(){
+          /**子类调用父类成员*/
+          super.show();
+          System.out.println("价格："+this.price);
+      }
+  }
+
+  猫：
+  package com.zhangguo.c43;
+
+  /**猫*/
+  public class Cat extends Animal {
+      /**重量*/
+      public double weight;
+  }
+
+  动物园：
+  package com.zhangguo.c43;
+
+  public class Zoo {
+
+      public static void main(String[] args) {
+
+          Dog dog = new Dog("中华田园犬","蓝色",123.56);
+          dog.show();
+
+          Cat cat = new Cat();
+          cat.name = "波斯猫";
+          cat.color = "红色";
+          cat.weight = 18.5;
+          cat.show();
+
+          A a = new A();
+          a.y = 100;
+          B b = new B();
+          b.y = 200;
+          // com.nf.c401.Hello h=new com.nf.c401.Hello();
+
+          C c = new C();
+          c.y = 200;
+          c.z = 200;
+
+      }
+  }
+
+  class A {
+      /**
+       * private 私有的，只允许本类访问
+       * public 公有的，允许所有类访问
+       * protected 受权保护的，只允许子类访问，同包访问
+       * default 允许同一个包访问 package，不写访问修饰符
+       **/
+      private int x;
+      protected int y;
+  }
+
+  class B extends A {
+      public int z;
+  }
+
+  class C extends B {
+  }
+
+
+  //class D extends A,B,C{}  单根性,只能继承一个父类，可实现多个接口
+
+  三、构造方法
+    3.1、构造方法概要
+
+    a)、构造方法是创建对象时调用的方法,(实例化 new),析构方法
+
+    b)构造方法名与类名相同(如Book类的构造方法名称一定Book)
+
+    c)、构造方法没有返回类型() public Book(){}
+
+    d)、一个类如果不定义构造方法会默认有一个无参构造方法，如果用户自定义了构造方法
+    则不再默认定义无参构造方法
+
+    package com.zhangguo.44;
+
+    /**车*/
+    public class Car{
+        /**车速*/
+        private int speed;
+
+        //构造方法
+        public Car(){
+            System.out.pringln("安装轮胎");
+            System.out.pringln("安装方向盘");
+            this.speed=230;
+        }
+    }
+
+    测试：
+    package com.zhangguo.c44;
+
+    public class CarClient
+    {
+        public static void main(String[] args) {
+
+
+            Car c1=new Car();
+
+            Car c2=new Car();
+
+        }
+    }
+    结果：
+    安装轮胎
+    安装方向盘
+    安装轮胎
+    安装方向盘
+
+    3.2、带参数的构造港府
+    a)、构造方法的参数与普通方法相同
+
+    b)、构造方法允许重载(同名方法不同参数个数或类型)
+
+    c)、在创建子类时会默认调用父类的构造方法，一般是无参构造
+
+    d)、使用super可以调用父类指定的构造方法，子类中调用父类的构造方法
+    必须在第一行
+
+    e)、使用super可以调用父类中的任意公开成员
+
+    package com.zhangguo.c44;
+
+    /** 车 */
+    public class Car {
+
+        /**车速*/
+        public int speed;
+
+        //构造方法
+        public Car(int _speed) {
+            this.speed=_speed;
+        }
+
+        //无参构造方法
+        public Car(){
+            this.speed=100;
+        }
+
+        /**启动*/
+        public void start()
+        {
+            System.out.println("车速："+this.speed);
+        }
+
+    }
+
+    测试：
+    package com.zhangguo.c44;
+
+    public class CarClient
+    {
+        public static void main(String[] args) {
+
+
+            Car c1=new Car(99);
+            c1.speed=100;
+            c1.start();
+
+            Car c2=new Car(350);
+            c2.start();
+
+            Car c3=new Car();
+            c3.speed=198;
+            c3.start();
+
+        }
+    }
+
+   结果：
+   车速：100
+   车速：350
+   车速：198
+  package com.zhangguo.c44;
+
+  class A{
+      public A() {
+          System.out.println("A");
+      }
+  }
+
+  class B extends A{
+      public B() {
+          System.out.println("B");
+      }
+  }
+
+
+  public class Student {
+
+      public static void main(String[] args) {
+          B b=new B();
+
+      }
+
+  }
+
+  运行结果：
+  A
+  B
+  动物：
+  package com.zhangguo.c47;
+
+  /**动物*/
+  public class Animal {
+
+      public Animal() {
+      }
+
+      public Animal(String name){
+          setName(name);
+      }
+
+      /**名称属性*/
+      private String name;
+      /**
+       * 获得名称
+       */
+      public String getName() {
+          return name;
+      }
+      /**
+       * 设置名称
+       */
+      public void setName(String name) {
+          this.name = name;
+      }
+
+      /**展示*/
+      public void show(){
+          System.out.println("这是"+this.name);
+      }
+
+  }
+  狗：
+  package com.zhangguo.c47;
+
+  /**狗*/
+  public class Dog extends Animal {
+      public Dog() {
+      }
+      public Dog(String name,String color) {
+          super(name);
+          setColor(color);
+      }
+
+      /**颜色*/
+      private String color;
+      public String getColor() {
+          return color;
+      }
+      public void setColor(String color) {
+          this.color = color;
+      }
+
+      /**重写父类的show方法，因为父类中也有一样的show方法*/
+      public void show(){
+          super.show();
+          System.out.println(" 颜色："+color);
+      }
+
+      //注解
+      @Override
+      public String toString() {
+          return "名称："+getName()+"，颜色："+getColor();
+      }
+
+
+  }
+
+  动物园：
+  package com.zhangguo.c47;
+
+  public class Zoo {
+
+      public static void main(String[] args) {
+          Dog dog1=new Dog("吉娃娃","红色");
+          System.out.println(dog1.toString());
+
+          Dog dog2=new Dog("大娃娃","蓝色");
+          System.out.println(dog2.toString());
+      }
+
+  }
+
+  结果：
+  名称：吉娃娃，颜色：红色
+  名称：大娃娃，颜色：蓝色
+
+  四、多态
+  面向对象的多态性主要体现在：重写与重载两方面
+
+
+  4.0、重载
+  同名方法，不同参数(类型或个数),与返回值无关，
+  适用所有方法(构造，静态，实例)。
+
+  构造方法重载：
+  同名方法，不同参数(类型或个数),与返回值无关，
+  适用所有方法(构造，静态，实例)。
+
+  构造方法重载：
+
+  package com.nf.c401;
+
+  /**学生类*/
+  public class Student{
+    /**构造方法*/
+    public Student(int height,String name,String hobby){
+        //super(); /**调用父类构造方法，写在第一行，默认就调用*/
+
+        this.height = height;
+        this.name = name;
+        this.hobby = hobby;
+    }
+
+    public Student(int height,String name){
+        this.height = height;
+        this.name = name;
+
+    }
+
+    public Student(String name){
+        this.name = name;
+    }
+
+    public Student(){
+
+    }
+
+    /* 身高 字段 ，成员变量，所有成员变量都有默认值**/
+    private int height;
+
+    /**姓名*/
+    private String name;
+
+    /**爱好*/
+    private String hobby;
+
+    /**身高属性 ，写*/
+    public void setHeight(int height){
+
+        if(height > 0 && height < 300){
+            this.height = height;
+        }else{
+            System.out.pringln("身高不正确");
+        }
+    }
+
+    /**身高属性 读*/
+    public int getHeight(){
+        return this.height;
+    }
+
+    /**显示方法*/
+
+    public void show(){
+        System.out.pringln("身高："+height+"，姓名："+
+        this.name+",爱好："+hobby);
+    }
+
+    public String getName(){
+        return name;
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public String getHobby(){
+        return hobby;
+    }
+
+    public void setHobby(String hobby){
+        this.hobby = hobby;
+    }
+
+    测试类：
+    package com.nf.c401;
+
+    public class School{
+        public static void main(String[] args){
+            Student tom = new Studnet(171,"成胜文","篮球");
+            tom.show();
+
+            Student rose = new Student();
+            rose.show();
+
+            Student mark = new Student("马克");
+            mark.setHeight(158);
+            mark.setHobby("篮球");
+            mark.show();
+        }
+    }
+  }
+  结果：
+  身高：171，姓名：成胜文，爱好：篮球
+  身高：0，姓名：null，爱好：null
+  身高:158,姓名:马克,爱好：篮球
+
+  4.1、LSP(里氏代换原则)
+  LSP全称Liskov Substitution Principle，
+  中文名意思是里氏代换原则。LSP讲的是基类和子类的关系。
+  只有当这种关系存在时，里氏代换关系才存在。
+
+  子类一定可以替换父类。
+  子类的信息量一定大于父类的。老鼠的儿子会打洞，老鼠的儿子一定可以
+  替代老师的父亲
+
+  package com.zhangguo.c45;
+
+  class A{
+  }
+  class B extends A{
+  }
+
+  public class Student {
+      public static void main(String[] args) {
+          A a1=new B();
+          Object a2=new A();
+
+          task(new B());
+      }
+
+      public static void task(A a){
+
+      }
+
+  }
+
+  在代码中需要父类对象的地方都可以使用子类对象替换。
+
+  4.2、重写(override)
+
+  在Java中,子类可继承父类中的方法，而不需要重写编写相同
+  的方法。但有时子类并不想原封不同地继承父类的方法，而是想作一定
+  的修改，这就需要采用方法的重写。方法重写又称方法覆盖。
+
+  package com.zhangguo.c46;
+
+  class Car{
+     public void start(){
+        System.out.pringln("车在跑");
+     }
+  }
+
+  class SuperCar extends Car{
+     public void start(){
+        System.out.pringln("车在飞");
+     }
+  }
+
+  public class Student{
+    public static void main(String[] args){
+        Car car = new SuperCar();
+        car.start();
+    }
+  }
+
+  运行结果:
+  车在飞
+
+  4.3、多态实现
+  同一个类的不同子类对象对同一个方法的调用产生不同的结果叫多态
+
+  演员
+
+  厨师
+
+  理发师
+
+  他都是Person人的子类，但当听到Cut(切)时他们的表现不一样。
+
+  package com.zhangguo.c47;
+
+  /**人*/
+  public class Person {
+
+      public void cut(){
+      }
+
+      public static void main(String[] args) {
+          Person player=new Player();
+          Person cooker=new Cooker();
+          Person cuter=new Cuter();
+
+          player.cut();
+          cooker.cut();
+          cuter.cut();
+      }
+  }
+
+  /**演员*/
+  class Player extends Person
+  {
+      /**重写*/
+      public void cut(){
+          System.out.println("停止演戏");
+      }
+  }
+
+  /**厨师*/
+  class Cooker extends Person
+  {
+      /**重写*/
+      public void cut(){
+          System.out.println("开始切菜");
+      }
+  }
+
+  /**厨师*/
+  class Cuter extends Person
+  {
+      /**重写*/
+      public void cut(){
+          System.out.println("开始剪头发");
+      }
+  }
+
+  运行结果：
+  停止演戏
+  开始切菜
+  开始剪头发
+
+  详解多态：
+  程序中定义的引用变量所指向的具体类型和通过该引用变量发出的方法调用在编程时并不确定，
+  而是在程序运行期间才确定，即一个引用变量倒底会指向哪个类的实例对象，该引用变量发出的
+  方法调用到底是哪个类中实现的方法，必须在由程序运行期间才能决定。因为在程序运行时才确定具体的类，
+  这样，不用修改源程序代码，就可以让引用变量绑定到各种不同的类实现上，从而导致该引用调用的具体方法随之改变，
+  即不修改程序代码就可以改变程序运行时所绑定的具体代码，让程序可以选择多个运行状态，这就是多态性。
+  多态性增强了软件的灵活性和扩展性。小李喜欢听小鸟唱歌{麻雀，杜鹃，鹦鹉}
+        小李：窗外的鸟儿，给我唱首歌。
+
+        　　　　1.（鸟 bird = new 麻雀 ）？
+
+        　　　　2.（鸟 bird = new 杜鹃 ）？
+
+        　　　　3.（鸟 bird = new 鹦鹉 ）？
+
+        　　　　鸟儿：bird.sing()~~~~~
+
+        　　　　小李：鸟儿唱的不错，你是哪种鸟？
+
+        　　　　鸟儿: bird.shape()
+
+        　　　　小李：（---如果上面蓝字定义的是3，是鹦鹉）哈哈！原来你是鹦鹉！
+
+        　　　　所以，多态的过程实质是一个抽象指令，让一组具有相同行为单具有不同
+               内容的个体协同工作的这样的一个过程。
+
+  方法的重写、重载与动态连接构成多态性；
+
+     Java之所以引入多态的概念，原因之一是它在类的继承问题上和C++不同，
+     后者允许多继承，这确实给其带来的非常强大的功能，但是复杂的继承关系
+     也给C++开发者带来了更大的麻烦，为了规避风险，Java只允许单继承，
+     派生类与基类间有IS-A的关系（即“猫”is a “动物”）。这样做虽然保证了
+     继承关系的简单明了，但是势必在功能上有很大的限制，所以，Java引入了多
+     态性的概念以弥补这点的不足，此外，抽象类和接口也是解决单继承规定限制的
+     重要手段。同时，多态也是面向对象编程的精髓所在。
+          要理解多态性，首先要知道什么是“向上转型”。
+
+          　　我定义了一个子类Cat，它继承了Animal类，那么后者就是前者的父类。我可以通过
+
+          　　Cat c = new Cat(); 例化一个Cat的对象，这个不难理解。
+
+          　　但当我这样定义时： Animal a = new Cat();
+
+          　　这代表什么意思呢？
+             很简单，它表示我定义了一个Animal类型的引用，指向新建的Cat类型的对象。
+             由于Cat是继承自它的父类Animal，所以Animal类型的引用是可以指向Cat类型的对象的。
+             那么这样做有什么意义呢？
+             因为子类是对父类的一个改进和扩充，所以一般子类在功能上较父类更强大，
+             属性较父类更独特，定义一个父类类型的引用指向一个子类的对象既可以使用子类强大的功能，
+             又可以抽取父类的共性。所以，父类引用只能调用父类中存在的方法和属性，
+             不能调用子类的扩展部分；因为父类引用指向的是堆中子类对象继承的父类；
+             （但是如果强制把超类转换成子类的话，就可以调用子类中新添加而超类没有的方法了。）
+
+             同时，父类中的一个方法只有在父类中定义而在子类中没有重写的情况下，才可以被父类类型的引用调用；
+
+             对于父类中定义的方法，如果子类中重写了该方法，那么父类类型的引用将会调用子类中的这个方法，这就是动态连接。
+
+
+
+
+
+
+
